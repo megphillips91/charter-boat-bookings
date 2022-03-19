@@ -13,7 +13,7 @@ class CB_Calendar {
 
   function __construct($type = NULL, $month=NULL, $year=NULL, $product_id=NULL, $action=NULL){
     $this->list_action = $action;
-    $this->month = date('n');
+    $this->month = date('mm');
     $this->year = date('Y');
     $this->type = $type;
     $this->product_id = $product_id;
@@ -126,7 +126,7 @@ class CB_Calendar {
     $today = new DateTime(NULL, new DateTimeZone(get_option('timezone_string')));
     $calendardate = new DateTime($date, new DateTimeZone(get_option('timezone_string')));
     $content = '<td class="calendar-day ';
-    $content .= ($today->format('Y-m-d') == $calendardate->format('Y-m-d')) ? ' current-date ' : ' ';
+    $content .= ($today->format('Y-mm-d') == $calendardate->format('Y-mm-d')) ? ' current-date ' : ' ';
     $content .= ' ">';
     $content .= $this->get_link($date, NULL);
     $content .= '</td>';
@@ -134,8 +134,10 @@ class CB_Calendar {
   }
 
   protected function get_link($date, $availability){
+    $calendardate = new DateTime($date, new DateTimeZone(get_option('timezone_string')));
+    $dateformat = $calendardate->format('Y-mm-d');
     $content = '<a class="clickable "
-    date="'.$date.'">
+    date="'.$dateformat.'">
     <span class="day-number">'.date('j', strtotime($date)).'</span></a>';
     return $content;
   }
@@ -150,7 +152,7 @@ class CB_Global_Calendar extends CB_Calendar {
 
   public function __construct($type=NULL, $month=NULL, $year=NULL, $product_id=NULL, $action=NULL){
     $this->list_action = $action;
-    $this->month = ($month == NULL) ? date('n') : $month;
+    $this->month = ($month == NULL) ? date('m') : $month;
     $this->year = ($year == NULL) ?  date('Y') : $year;
     $this->type = 'global';
     $this->html = $this->draw_calendar();
@@ -216,6 +218,8 @@ class CB_Product_Calendar extends CB_Calendar {
   }
 
   protected function get_link($date, $availability){
+    $calendardate = new DateTime($date, new DateTimeZone(get_option('timezone_string')));
+    $dateformat = $calendardate->format('Y-m-d');
     $content = '
     <span class="day-number">'.date('j', strtotime($date)).'</span>';
     return $content;
@@ -223,11 +227,10 @@ class CB_Product_Calendar extends CB_Calendar {
 
   protected function get_link_availability($date, $availability){
     if($availability->available){
-      /*$content = '<a class="clickable "
-      date="'.$date.'" product_id="'.$this->product_id.'">
-      <span class="day-number">'.date('j', strtotime($date)).'</span></a>';*/
+      $calendardate = new DateTime($date, new DateTimeZone(get_option('timezone_string')));
+      $dateformat = $calendardate->format('Y-m-d');
       $content = '<a class="clickable ';
-      $content .= ' cb-product-calendar-link " date="'.$date.'" product_id="'.$this->product_id.'" list_action="'.$this->action.'">';
+      $content .= ' cb-product-calendar-link " date="'.$dateformat.'" product_id="'.$this->product_id.'" list_action="'.$this->action.'">';
       //$content .= $this->get_product_type($date).'-tocart " date="'.$date.'" product_id="'.$this->product_id.'">';
       $content .= '<span class="day-number">'.date('j', strtotime($date)).'</span></a>';
     } else {
