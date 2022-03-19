@@ -1,13 +1,22 @@
 # Charter Boat Bookings #
 Contributors: megphillips91
+
 Donate link: https://msp-media.org/product/support-open-source/
+
 Tags: sailing charter reservations, fishing charter bookings, WooCommerce boat booking system, boat reservation software, online boat booking, boat charter software, charter boat booking software, charter booking software
+
 Requires at least: 5.1
+
 Tested up to: 5.3
+
 Requires PHP: 5.6.4
+
 Stable tag: trunk
+
 License: GPLv2 or later
+
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
 
 Charter Boat Bookings is a boat booking system for captains. Use Woocommerce for reservations - Sunset Sails, Daysails, Sportfishing, Inshore Fishing
 
@@ -17,6 +26,17 @@ Charter Boat Bookings is a boat booking system for captains. Use Woocommerce for
 Charter Boat Bookings is a WooCommerce extension specifically designed to take reservations for Charter Boats. Built to suit the business needs of Sailing Charters, Fishing Charters, Sportfishing, Fishing Guides, even Duck Hunting Guides. This WordPress charter boat booking system includes industry specific features including weather predictions and sunset dependent products. Book private or per person charters, and set your maximum passenger capacity. Minimize refunds with built-in reservation fee and final balance.
 
 This plugin works as boat reservation software. It is not a general reservation system for tour operators that has been adapted into an online boat booking system. The target users for this plugin are owner-operator captains with no code writing expertise. The dashboard has as few settings as possible to set up a typical sailing or fishing schedule and take paid reservations, manage availability, and communicate effectively with your customers.
+
+## Changelog ##
+### March 19-2022 ###
+- Meg rebased from svn trunk on Mar-19,2022 due to plugin suspension for potential sql injection vulnerability
+- Please review the changes to the CB_Booking_Query Class which is used by the availabilty, charter-confirmation, admin ajax calls to query the bookings from custom database table wp_cb_bookings
+- Added method args_are_valid which returns true or false on checking data type
+- used $wpdb->prepare within the query factory methods to prepare the query and then pass that back into the class and run the query on instantiation.
+- if you have any questions, please feel free to reach out to me on issues tab here. 
+- cheers :)
+
+
 
 #### Background ####
 Developed by a team with more than 40 combined years experience within all aspects of the charter industry: daysailing, bareboat charters, inshore fishing charters, sportfishing charters, marina management, and even fleet management.
