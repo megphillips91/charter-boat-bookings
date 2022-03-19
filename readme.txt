@@ -1,11 +1,11 @@
 === Charter Boat Bookings ===
 Contributors: megphillips91
 Donate link: https://msp-media.org/product/support-open-source/
-Tags: sailing charter reservations, fishing charter bookings, WooCommerce, bookings, reservations, boat booking system, boat reservation software, online boat booking, boat charter software, charter boat booking software, charter booking software
-Requires at least: 5.0
-Tested up to: 5.3
-Requires PHP: 5.3
-Stable tag: trunk
+Tags: Charter Boats, Bookings, WooCommerce, Tours, Tour Operator, Booking Calendar, Booking System, Reservations, Availability Calendar
+Requires at least: 5.3
+Tested up to: 5.5
+Requires PHP: 7.1.2
+Stable tag: 1.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
