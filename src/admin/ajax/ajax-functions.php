@@ -55,16 +55,14 @@ add_action( 'wp_ajax_cb_admin_filter_booking_status', __NAMESPACE__ . '\\cb_admi
 function cb_admin_filter_booking_status_callback(){
   $response = array();
   $args = array();
+  $booking_status = sanitize_text_field($_POST['booking_status']);
   if(session_status() === PHP_SESSION_NONE){session_start();}
-  $_SESSION['cb_admin_bookings_status'] = sanitize_text_field($_POST['booking_status']);
-  if($_SESSION['cb_admin_bookings_status'] != 'all'){
-    $args['booking_status'] = $_SESSION['cb_admin_bookings_status'];
-  }
-  if(isset($_SESSION['cb_admin_date_range'])){
-    $args['date_range'] = $_SESSION['cb_admin_date_range'];
-  }
+  $_SESSION['cb_admin_bookings_status'] = $booking_status;
+  $args = array(
+    'booking_status' => $booking_status
+  );
   $response['args'] = $args;
-  $bookings = new CB_Booking_Query($args, 'date_range');
+  $bookings = new CB_Booking_Query($args, 'booking_status');
   $response['bookings']=$bookings;
   $view = (isset($_SESSION['cb_bookings_admin_view']))
     ? $_SESSION['cb_bookings_admin_view']
@@ -80,17 +78,41 @@ add_action( 'wp_ajax_cb_admin_filter_date_range', __NAMESPACE__ . '\\cb_admin_fi
 function cb_admin_filter_date_range_callback(){
   $response = array();
   $args = array();
+  /* setting a session variable so it can remember state */
   if(session_status() === PHP_SESSION_NONE){session_start();}
   if(isset($_SESSION['booking_status'])){
     $args['booking_status'] = $_SESSION['booking_status'];
   }
-  if(isset($_POST['date_range']) ){
-    /* MEGTODO: use a nonce? */
-    $args['date_range'] = sanitize_text_field($_POST['date_range']);
-    $_SESSION['cb_admin_date_range'] = sanitize_text_field($_POST['date_range']);
+  /* setting which type of booking query */
+  $bookings = array();
+  if( isset($_POST['date_range']) ){
+    $range = sanitize_text_field($_POST['date_range']);
+    switch ( $range ){
+      case 'future':
+        $bookings = new CB_Booking_Query(array('future' => 'future'), 'future');
+        break;
+      case 'past':
+        $bookings = new CB_Booking_Query(array('past' => 'past'), 'past');
+        break;
+      default:
+        $bookings = new CB_Booking_Query(array('future' => 'future'), 'future');
+    }
+  } else {
+    if( isset( $_POST['booking_status'] ) ){
+      $status = sanitize_text_field($_POST['date_range']);
+      switch ( $status ){
+        case 'reserved':
+          $bookings = new CB_Booking_Query(array('future' => 'future'), 'future');
+          break;
+        case 'confirmed':
+          $bookings = new CB_Booking_Query(array('past' => 'past'), 'past');
+          break;
+        default:
+          $bookings = new CB_Booking_Query(array('future' => 'future'), 'future');
+      }
+    }
   }
-  $response['args'] = $args;
-  $bookings = new CB_Booking_Query($args, 'date_range');
+  
   $response['bookings'] = $bookings;
   $admin_page = new CB_Admin_Page(NULL, $bookings);
   $response['html']=$admin_page->html;
