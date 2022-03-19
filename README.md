@@ -7,11 +7,15 @@ Tags: sailing charter reservations, fishing charter bookings, WooCommerce boat b
 
 Requires at least: 5.1
 
-Tested up to: 5.3
+Tested up to: 5.9.2
 
 Requires PHP: 5.6.4
 
 Stable tag: trunk
+
+WC requires at least: 5.7
+
+WC tested up to: 6.2
 
 License: GPLv2 or later
 

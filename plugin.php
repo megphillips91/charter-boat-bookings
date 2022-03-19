@@ -5,11 +5,14 @@
  * Description: Charter Boat Bookings is a WooCommerce extension created specifically with Sailing Charters and Fishing Charters in mind. Charterboat Bookings includes industry specific features such as weather predictions and sunset dependant products. Book private or per person charters, and set your maximum passengar capacity. Minimize refunds with built-in reservation fee and final balance.
  * In particular, the charter boat industry is highly weather dependant and therein has many weather cancellations and/or refunds. Due to this, Charter Bookings accepts a reservation fee and a final balance fee rather than a full payment up front. This functionality proves ideal for the charter operator since the final balance is due only three days prior to the charter such that funds will typically not have transferred to charter operator's bank and therein providing customer refunds is much easier.
  * Author: megphillips91
- * Author URI: http://msp-media.org/
- * Version: 1.3.1
- * License: GPL2+
- * http://www.gnu.org/licenses/gpl-3.0.html
- *
+ * Author URI: http://msp-media.org/Requires at least: 5.0
+ * Tested up to: 5.9.2
+ * Requires PHP: 7.0
+ * WC requires at least: 5.7
+ * WC tested up to: 6.2
+ * Stable tag: trunk
+ * License: GPLv2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 
  /*
