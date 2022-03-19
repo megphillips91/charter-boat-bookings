@@ -78,10 +78,22 @@ class CB_Booking_Query {
       case 'date':
         return true;
         break;
+      
+      case 'date_range':
+        if( !isset($this->args['date_range']) ){
+          return false;
+        } else {
+          $date_range = $this->args['date_range'];
+          if( array_key_exists('start', $date_range) && array_key_exists('end', $date_range) ){
+            return true;
+          }
+        }
+        break;
 
       case NULL:
         return false;
         break;
+        
       default:
         return false;
     }
@@ -204,12 +216,16 @@ where date(charter_date)  >= date(now()) ";
       trigger_error("args['date_rage'] is required and not set. query returns false from Class CB_Booking_Query ln 174", E_USER_ERROR);
       return;
     } else {
+      global $wpdb;
+      $dates = $this->args['date_range'];
+      $start_date = sanitize_text_field($dates['start']);
+      $end_date = sanitize_text_field($dates['end']);
       $sort = (!isset($this->args['sort'])) ? 'ASC' : $this->args['sort'];
       $qry = "select * from wp_charter_bookings
   where date(charter_date) ";
       if(is_array($this->args['date_range'])){
-        $qry .= ">= '".$this->args['date_range']['start']."'
-  && date(charter_date) <= '".$this->args['date_range']['end']."' ";
+        $qry .= ">= '%s'
+  && date(charter_date) <= %s";
       } else {
         if($this->args['date_range'] == 'future'){
           $qry .= " >= date(now()) ";
@@ -218,18 +234,8 @@ where date(charter_date)  >= date(now()) ";
           $qry .= " <= now() ";
         }
       }
-        /*if(count($this->args) >= 2){
-            $x=0;
-          foreach($this->args as $key=>$value){
-            if($key != 'date_range' && $key != 'sort'){
-              $x++;
-              $qry .=  " AND " ;
-              $qry .= " ".$key." = '".$value."'";
-            }
-          }
-        }*/
       $qry .= " ORDER BY charter_date ".$sort;
-      $this->query = $qry;
+      $this->query = $wpdb->prepare($qry, $start_date, $end_date);
     }
     
   }

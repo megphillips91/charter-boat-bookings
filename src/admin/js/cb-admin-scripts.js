@@ -4,7 +4,6 @@ jQuery(document).ready(function ($) {
 /* Scope: Javascript that affects admin side of WP
 * Changelog
 * - removed add booking onClick Mar-2022
-* - 
 */
 
 

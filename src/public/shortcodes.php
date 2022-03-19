@@ -67,16 +67,16 @@ function cb_sitewide_availability_shortcode($atts){
   return $availability->available;
 }
 
-add_shortcode('testing_sql_prepare', __NAMESPACE__ . '\\cb_prepare_sql');
+//add_shortcode('testing_sql_prepare', __NAMESPACE__ . '\\cb_prepare_sql');
 function cb_prepare_sql($atts){
   $atts = shortcode_atts(
 		array(
       'charter_date'=>'2022-03-18'
 		), $atts, 'testing_sql_prepare' );
-    $booking_query = new CB_Booking_query(array('charter_date'=>'2022-03-18'),'date');
+    $charters = new CB_Charters('2022-03-01', '2022-05-31');
     ob_start();
     echo '<pre>';
-    var_dump($booking_query);
+    var_dump($charters);
     echo '</pre>';
     return ob_get_clean();
 }

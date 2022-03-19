@@ -42,7 +42,9 @@ class CB_Charters {
 
     private function set_charter_datetimes(){
       $args = array(
-        'date_range'=>array('start'=>$this->start, 'end'=>$this->end),
+        'date_range'=>array(
+          'start'=>$this->start, 
+          'end'=>$this->end),
         'sort'=>'ASC'
       );
       $bookings = new CB_Booking_Query($args, 'date_range');
