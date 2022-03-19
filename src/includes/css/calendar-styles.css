@@ -1,0 +1,149 @@
+.cb-calendar-container, .cb-lazyload-global-calendar{
+	position: relative;
+}
+
+.cb-lazyload-global-calendar {
+	min-height: 215px
+}
+
+.cb-calendar-container table{
+	margin: 0;
+}
+
+.cb-hold-calendar-loader {
+	opacity: 0;
+	text-align: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: -100;
+}
+
+.cb-calendar-container .current-date {
+	border: 3px solid #E1E2E7;
+}
+
+
+
+.cb-calendar-container .calendar-month a:not([href]) {
+	color: #c0c0c0; !important
+	}
+
+.cb-calendar-container .calendar-month a:not([href]):hover {
+		color: #333; !important
+		}
+
+.clickable {
+	cursor: pointer
+}
+
+.cb-calendar-container {
+	width: 90%;
+	margin: 0 auto;
+}
+
+.single-product .entry-summary .cb-calendar-container {
+	width: 100%;
+}
+
+.cb-calendar-container .calendar-loading {
+	text-align: center;
+}
+
+.cb-calendar-container ul {
+	margin: 0
+}
+
+.cb-calendar-container .align-center {
+	text-align: center;
+}
+
+table.calendar {
+	border-left: 1px solid #E1E2E7;
+}
+
+.ss-calendar tr, td.st-day {
+	padding: 0;
+	margin: 0;
+	border: none
+}
+
+td.calendar-day {
+	font-size: 11px;
+}
+
+td.calendar-day-np {
+	background: #ffffff;
+	min-height: 80px;
+}
+
+* html div.calendar-day-np {
+	height: 80px;
+}
+
+td.calendar-day, td.calendar-day-np {
+	background: #41BA8D;
+	padding: 5px;
+	border-bottom: 1px solid #E1E2E7;
+	border-right: 1px solid #E1E2E7;
+}
+
+td.none, td.none:hover, td.calendar-day-np, td.calendar-day-np:hover {
+	background: #ffffff;
+}
+
+.cb-calendar-container .no-date {
+	background: #ffffff
+}
+
+.cb-calendar-container td a {
+	display: block;
+	width: 100%;
+}
+
+.calendar-month {
+  background: #ffffff;
+	font-weight: bold;
+  border: 1px solid #E1E2E7;
+	font-size: 16px;
+}
+
+.calendar-month a {
+  cursor: pointer;
+  width: 10%;
+  padding: 0 20px;
+}
+
+td.calendar-day-head {
+	background: #ffffff;
+	font-weight: bold;
+	text-align: center;
+	width: 120px;
+	padding: 5px;
+	border-bottom: 1px solid #E1E2E7;
+	border-top: 1px solid #E1E2E7;
+	border-right: 1px solid #E1E2E7;
+	font-size: 10px;
+}
+
+span.day-number {
+	padding: 5px;
+	color: #333;
+	font-weight: bold;
+	margin: -5px -5px 0 0;
+	width: 27px;
+	text-align: center;
+}
+
+td.not-available, td.not-available:hover {
+	background: #E7B7B8
+}
+
+.cb-calendar-container .calendar-row td {
+	height: 30px;
+}
+
+.charter_deets {
+	padding-left: 10px
+}
