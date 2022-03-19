@@ -18,26 +18,6 @@ echo '<pre>'; var_dump($message); echo '</pre>';
 }
 
 
-
-add_shortcode('cb_list_products', __NAMESPACE__ . '\\cb_list_products_shortcode');
-function cb_list_products_shortcode($atts){
-  $atts = shortcode_atts(
-		array(
-      'date'=>NULL
-		), $atts, 'cb_list_products' );
-  $date = ($atts['date'] == NULL) ? date('Y-m-d') : $atts['date'] ;
-  //echo '<pre>'; var_dump(); echo '</pre>';
-  $products_listing = new CB_List_Products($date);
-  $content = '<div class="cb-hold-global-display">';
-  $content .= '<div class="cb-lazyload-global-calendar" date="'.$date.'" list_action="tocart"><div class="cb-hold-calendar-loader"><span class="fa-stack fa-lg">
-  <i class="fa fa-circle fa-stack-2x"></i>
-  <i class="fa fa-compass fa-inverse fa-spin fa-stack-2x"></i>
-</span></div></div>';
-  $content .= '<div>'.$products_listing->html.'</div>';
-  $content .= '</div>';
-  return $content;
-}
-
 add_shortcode('cb_show_product', __NAMESPACE__ . '\\cb_show_product_shortcode');
 function cb_show_product_shortcode($atts){
   $atts = shortcode_atts(
@@ -91,10 +71,9 @@ add_shortcode('testing_sql_prepare', __NAMESPACE__ . '\\cb_prepare_sql');
 function cb_prepare_sql($atts){
   $atts = shortcode_atts(
 		array(
-      'type' => 'simple',
-      'id'=>1
+      'charter_date'=>'2022-03-18'
 		), $atts, 'testing_sql_prepare' );
-    $booking_query = new CB_Booking_query(array('id'=>1),'simple');
+    $booking_query = new CB_Booking_query(array('charter_date'=>'2022-03-18'),'date');
     ob_start();
     echo '<pre>';
     var_dump($booking_query);
