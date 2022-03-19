@@ -11,7 +11,7 @@ Tested up to: 5.9.2
 
 Requires PHP: 5.6.4
 
-Stable tag: trunk
+Stable tag: trunk (1.8)
 
 WC requires at least: 5.7
 
