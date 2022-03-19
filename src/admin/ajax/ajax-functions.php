@@ -4,6 +4,11 @@ use \Datetime;
 use \DateTimeZone;
 use \DateInterval;
 
+/**
+ * changelog Mar 2022
+ * removed wp_ajax cb_admin_view_callback
+ */
+
 add_action( 'wp_ajax_nopriv_cb_open_booking_add', __NAMESPACE__ . '\\cb_open_booking_add_callback' );
 add_action( 'wp_ajax_cb_open_booking_add', 'cb_open_booking_add_callback' );
 
@@ -119,33 +124,7 @@ function cb_admin_filter_date_range_callback(){
   wp_send_json($response);
 }
 
-add_action( 'wp_ajax_nopriv_cb_admin_view', __NAMESPACE__ . '\\cb_admin_view_callback' );
-add_action( 'wp_ajax_cb_admin_view', __NAMESPACE__ . '\\cb_admin_view_callback' );
 
-function cb_admin_view_callback(){
-  $response = array();
-  $args = array();
-  if(session_status() === PHP_SESSION_NONE){session_start();}
-  if(isset($_SESSION['booking_status'])){
-    $args['booking_status'] = $_SESSION['booking_status'];
-  }
-  if(isset($_SESSION['date_range'])){
-    /* MEGTODO: here we are getting the range from a session variable and I've already validated it. */
-    $args['date_range'] = $_SESSION['date_range'];
-  }
-  if(sanitize_text_field($_POST['view']) == 'week'){
-    $admin_page = new CB_Admin_Page(sanitize_text_field($_POST['view']), NULL);
-    $response['html']=$admin_page->html;
-    wp_send_json($response);
-  } else {
-    $bookings = new CB_Booking_Query($args, 'date_range');
-    $view = sanitize_text_field($_POST['view']);
-    $admin_page = new CB_Admin_Page(sanitize_text_field($_POST['view']), $bookings);
-    $response['html']=$admin_page->html;
-    wp_send_json($response);
-  }
-
-}
 
 
  ?>
