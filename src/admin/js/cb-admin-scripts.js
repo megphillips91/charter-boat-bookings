@@ -2,6 +2,9 @@ jQuery(document).ready(function ($) {
 
 // Author: Meg Phillips;
 /* Scope: Javascript that affects admin side of WP
+* Changelog
+* - removed add booking onClick Mar-2022
+* - 
 */
 
 
@@ -29,21 +32,6 @@ function get_url_param (name){
      return results[1] || 0;
   }
 }
-
-//add booking
-$(document).on('click','.cb-open-booking-addnew',function(event){
-  event.preventDefault();
-	console.log('clicked add');
-  $('.cb-booking-modal-backdrop').css('display','block');
-	var data = {
-		'action': 'cb_open_booking_add'
-		}
-	$.post(chbk_admin_scripts_vars.admin_ajax, data, function(response) {
-    	$('.cb-hold-booking').html(response.html);
-			lazyloadGlobalCalendar();
-			adminLazyloadProductListing();
-		});
-});
 
 //admin booking
 $(document).on('click','.cb-open-booking',function(event){
@@ -87,7 +75,7 @@ $(document).on('change','.woocommerce_page_cb-bookings #date_range',function(eve
   event.preventDefault();
 	var data = {
 		'action': 'cb_admin_filter_date_range',
-    'date_range': $('#date_range').val()
+    	'date_range': $('#date_range').val()
 		}
 	$.post(chbk_admin_scripts_vars.admin_ajax, data, function(response) {
     	$('#wpbody-content .wrap').replaceWith(response.html);
