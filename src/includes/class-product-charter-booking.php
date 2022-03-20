@@ -23,8 +23,11 @@ function register_charter_boat_booking_product_type() {
 	class WC_Product_Charter_Booking extends WC_Product {
 
 		public function __construct( $product ) {
-			parent::__construct( $product );
+			$this->product_type = 'charter_booking';
+			$this->set_virtual(true);
       $this->set_charter_booking_product_meta();
+			parent::__construct( $product );
+
 		}
 		/*
 		** getters for charter booking object
@@ -56,6 +59,9 @@ function register_charter_boat_booking_product_type() {
 	}//end class declaration
 
 }
+include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+if(is_plugin_active('woocommerce/woocommerce.php')){
 add_action( 'init', 'register_charter_boat_booking_product_type' );
+}
 
  ?>

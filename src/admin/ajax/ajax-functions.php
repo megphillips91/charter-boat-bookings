@@ -4,11 +4,6 @@ use \Datetime;
 use \DateTimeZone;
 use \DateInterval;
 
-/**
- * changelog Mar 2022
- * removed wp_ajax cb_admin_view_callback
- */
-
 add_action( 'wp_ajax_nopriv_cb_open_booking_add', __NAMESPACE__ . '\\cb_open_booking_add_callback' );
 add_action( 'wp_ajax_cb_open_booking_add', 'cb_open_booking_add_callback' );
 
@@ -60,14 +55,16 @@ add_action( 'wp_ajax_cb_admin_filter_booking_status', __NAMESPACE__ . '\\cb_admi
 function cb_admin_filter_booking_status_callback(){
   $response = array();
   $args = array();
-  $booking_status = sanitize_text_field($_POST['booking_status']);
   if(session_status() === PHP_SESSION_NONE){session_start();}
-  $_SESSION['cb_admin_bookings_status'] = $booking_status;
-  $args = array(
-    'booking_status' => $booking_status
-  );
+  $_SESSION['cb_admin_bookings_status'] = sanitize_text_field($_POST['booking_status']);
+  if($_SESSION['cb_admin_bookings_status'] != 'all'){
+    $args['booking_status'] = $_SESSION['cb_admin_bookings_status'];
+  }
+  if(isset($_SESSION['cb_admin_date_range'])){
+    $args['date_range'] = $_SESSION['cb_admin_date_range'];
+  }
   $response['args'] = $args;
-  $bookings = new CB_Booking_Query($args, 'booking_status');
+  $bookings = new CB_Booking_Query($args, 'date_range');
   $response['bookings']=$bookings;
   $view = (isset($_SESSION['cb_bookings_admin_view']))
     ? $_SESSION['cb_bookings_admin_view']
@@ -83,48 +80,48 @@ add_action( 'wp_ajax_cb_admin_filter_date_range', __NAMESPACE__ . '\\cb_admin_fi
 function cb_admin_filter_date_range_callback(){
   $response = array();
   $args = array();
-  /* setting a session variable so it can remember state */
   if(session_status() === PHP_SESSION_NONE){session_start();}
   if(isset($_SESSION['booking_status'])){
     $args['booking_status'] = $_SESSION['booking_status'];
   }
-  /* setting which type of booking query */
-  $bookings = array();
-  if( isset($_POST['date_range']) ){
-    $range = sanitize_text_field($_POST['date_range']);
-    switch ( $range ){
-      case 'future':
-        $bookings = new CB_Booking_Query(array('future' => 'future'), 'future');
-        break;
-      case 'past':
-        $bookings = new CB_Booking_Query(array('past' => 'past'), 'past');
-        break;
-      default:
-        $bookings = new CB_Booking_Query(array('future' => 'future'), 'future');
-    }
-  } else {
-    if( isset( $_POST['booking_status'] ) ){
-      $status = sanitize_text_field($_POST['date_range']);
-      switch ( $status ){
-        case 'reserved':
-          $bookings = new CB_Booking_Query(array('future' => 'future'), 'future');
-          break;
-        case 'confirmed':
-          $bookings = new CB_Booking_Query(array('past' => 'past'), 'past');
-          break;
-        default:
-          $bookings = new CB_Booking_Query(array('future' => 'future'), 'future');
-      }
-    }
+  if(isset($_POST['date_range']) ){
+    $args['date_range'] = sanitize_text_field($_POST['date_range']);
+    $_SESSION['cb_admin_date_range'] = sanitize_text_field($_POST['date_range']);
   }
-  
+  $response['args'] = $args;
+  $bookings = new CB_Booking_Query($args, 'date_range');
   $response['bookings'] = $bookings;
   $admin_page = new CB_Admin_Page(NULL, $bookings);
   $response['html']=$admin_page->html;
   wp_send_json($response);
 }
 
+add_action( 'wp_ajax_nopriv_cb_admin_view', __NAMESPACE__ . '\\cb_admin_view_callback' );
+add_action( 'wp_ajax_cb_admin_view', __NAMESPACE__ . '\\cb_admin_view_callback' );
 
+function cb_admin_view_callback(){
+  $response = array();
+  $args = array();
+  if(session_status() === PHP_SESSION_NONE){session_start();}
+  if(isset($_SESSION['booking_status'])){
+    $args['booking_status'] = $_SESSION['booking_status'];
+  }
+  if(isset($_SESSION['date_range'])){
+    $args['date_range'] = $_SESSION['date_range'];
+  }
+  if(sanitize_text_field($_POST['view']) == 'week'){
+    $admin_page = new CB_Admin_Page(sanitize_text_field($_POST['view']), NULL);
+    $response['html']=$admin_page->html;
+    wp_send_json($response);
+  } else {
+    $bookings = new CB_Booking_Query($args, 'date_range');
+    $view = sanitize_text_field($_POST['view']);
+    $admin_page = new CB_Admin_Page(sanitize_text_field($_POST['view']), $bookings);
+    $response['html']=$admin_page->html;
+    wp_send_json($response);
+  }
+
+}
 
 
  ?>
