@@ -13,12 +13,20 @@ function cb_admin_errors() {
 		echo $notice;
 	}
 	$notice = '
+		<div class="notice notice-error">
+				<p>'.'Charter Bookings is a WooCommerce Extension. It cannot work without WooCommerce Installed and Activated. <a href="'.admin_url('plugin-install.php?s=woocommerce&tab=search&type=term').'">Install WooCommerce Now</a>.'.'</p>
+		</div>';
+	if(!class_exists('WC_Product', false)){
+		echo $notice;
+	}
+	$notice = '
 		<div class="notice notice-error is-dismissible">
 				<p>'.'Charter Bookings cannot display the weather and will not work properly without an OpenWeather API key. Navigate to <a href="https://openweathermap.org/" target="_blank">Open Weather</a> to sign up for an Open Weather API Key. The Open Weather API is free to join and free to use. Once you have your API key, navigate to <a href="'.admin_url().'/admin.php?page=wc-settings&tab=products&section=cb_bookings">WooCommerce/Products/Charter Bookings</a> to enter key'.'</p>
 		</div>';
 		if(!get_option('cb_open_weather_key') || empty(get_option('cb_open_weather_key'))){
 			echo $notice;
 		}
+
 }
 add_action('admin_notices', __NAMESPACE__ . '\\cb_admin_errors');
 

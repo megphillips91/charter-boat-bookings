@@ -169,7 +169,7 @@ add_action( 'wp_ajax_cb_delete_order', __NAMESPACE__ . '\\cb_delete_order_callba
 
 function cb_delete_order_callback(){
   global $wpdb;
-  $qry = "select * from wp_posts where post_name LIKE '%reservation%' || post_name LIKE '%balance%'";
+  $qry = "select * from ".$wpdb->prefix."posts where post_name LIKE '%reservation%' || post_name LIKE '%balance%'";
   $posts = $wpdb->query($qry);
   foreach($posts as $product_post){
     $product = wc_get_product($product_post->ID);

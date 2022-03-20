@@ -13,7 +13,7 @@ function cb_summary_callback(){
 	$product_listing = new CB_List_Product($product_id, NULL, 'yes');
 	$response['product_listing'] = $product_listing;
 	$response['calendar'] = $calendar;
-	$content = '<div class="cb-entry-summary" id="'.rand().'"><div class="hold-product-calendar" id="'.rand().'">'.$calendar->html.'</div>';
+	$content = '<div class="cb-hold-summary"><div class="cb-wrap-global-display cb-entry-summary" id="'.rand().'"><div class="hold-product-calendar cb-calendar-container" id="'.rand().'">'.$calendar->html.'</div>';
 	$content .= '<div class="hold-product-listing" id="'.rand().'">'.$product_listing->html.'</div></div>';
 	$response['html'] = $content;
 	wp_send_json($response);
@@ -48,20 +48,21 @@ function cb_book_now_tab_callback(){
 //display the charter availability calendar
 
 function cb_product_page() {
-		if(is_charter_booking(get_the_ID())){
-			remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10 );
-			remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
-			$product_id = get_the_ID();
-			$content = '<div class="cb-entry-summary lazyload-cb-summary cb-loading" id="'.rand().'" product_id="'.$product_id.'">';
-			$content .= '<h3><span class="fa-stack fa-lg">
-      <i class="fa fa-circle fa-stack-2x"></i>
-      <i class="fa fa-compass fa-inverse fa-spin fa-stack-2x"></i>
+	if(is_charter_booking(get_the_ID())){
+		remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10 );
+		remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
+		$product_id = get_the_ID();
+		$content = '<div class="cb-entry-summary lazyload-cb-summary cb-loading" id="'.rand().'" product_id="'.$product_id.'">';
+		$content .= '<h3><span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x"></i>
+  <i class="fa fa-compass fa-inverse fa-spin fa-stack-2x"></i>
 </span></h3><h3>searching availabilty</h3>';
-			$content .= '</div>';
-			echo $content;
-		}
+		$content .= '</div>';
+		echo $content;
+	}
 }
-add_action( 'woocommerce_single_product_summary' , __NAMESPACE__ . '\\cb_product_page', 5 );
+//add_action( 'woocommerce_single_product_summary' , __NAMESPACE__ . '\\cb_product_page', 5 );
+add_action( 'woocommerce_after_single_product_summary' , __NAMESPACE__ . '\\cb_product_page', 5 );
 
 /**
  * Add Book Now Tab to Charter Booking Single Product pages

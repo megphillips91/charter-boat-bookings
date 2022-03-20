@@ -18,6 +18,26 @@ echo '<pre>'; var_dump($message); echo '</pre>';
 }
 
 
+
+add_shortcode('cb_list_products', __NAMESPACE__ . '\\cb_list_products_shortcode');
+function cb_list_products_shortcode($atts){
+  $atts = shortcode_atts(
+		array(
+      'date'=>NULL
+		), $atts, 'cb_list_products' );
+  $date = ($atts['date'] == NULL) ? date('Y-m-d') : $atts['date'] ;
+  //echo '<pre>'; var_dump(); echo '</pre>';
+  $products_listing = new CB_List_Products($date);
+  $content = '<div class="cb-hold-global-display">';
+  $content .= '<div class="cb-lazyload-global-calendar" date="'.$date.'" list_action="tocart"><div class="cb-hold-calendar-loader"><span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x"></i>
+  <i class="fa fa-compass fa-inverse fa-spin fa-stack-2x"></i>
+</span></div></div>';
+  $content .= '<div>'.$products_listing->html.'</div>';
+  $content .= '</div>';
+  return $content;
+}
+
 add_shortcode('cb_show_product', __NAMESPACE__ . '\\cb_show_product_shortcode');
 function cb_show_product_shortcode($atts){
   $atts = shortcode_atts(
@@ -53,6 +73,21 @@ function cb_product_calendar_shortcode($atts){
 }
 
 
+//add_shortcode('sitewide_availability', 'cb_sitewide_availability_shortcode');
+function cb_sitewide_availability_shortcode($atts){
+  //set up defaults
+  $atts = shortcode_atts(
+		array(
+      'product_id' => 1098,
+      'date'=>'2019-12-25'
+		), $atts, 'sitewide_availability' );
+  //instantiate availability
+  $availability = new CB_Product_Availability($atts['date'], $atts['product_id']);
+  echo '<pre>';var_dump($availability);echo '</pre>';
+  return $availability->available;
+}
+
+
 
 add_shortcode('charter_booking_confirmation', __NAMESPACE__ . '\\charter_booking_confirmation_shortcode');
 
@@ -61,7 +96,7 @@ function charter_booking_confirmation_shortcode () {
     $content = '<div class="alert alert-danger">Error: This page requires a url attribute "booking_id".</div>';
     return $content;
   }
-  $booking = new CB_Booking( sanitize_text_field($_GET['booking_id']) );
+  $booking = new CB_Booking($_GET['booking_id']);
   if($booking->booking_status != 'confirmed'){
     $content = $booking->display_booking_details();
     $content .= $booking->display_confirmation_tocart();
@@ -70,6 +105,7 @@ function charter_booking_confirmation_shortcode () {
     $content = '<div class="alert alert-warning"><p>
     Thank you for checking in. It looks like your charter is already confirmed.</p><p>Enjoy your trip!</p></div>';
     $content .= $booking->display_booking_details();
+    //$content .= $booking->display_confirmation_tocart();
     return $content;
   }
 }
