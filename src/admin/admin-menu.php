@@ -15,10 +15,10 @@ function cb_charter_bookings_submenu_page_callback (){
     if(isset($_SESSION[$var])){unset($_SESSION[$var]);}
   }
   $args = array(
-    'date_range'=>'future'
+    'future'=>'future'
   );
-  $bookings = new CB_Booking_Query($args, 'date_range');
-  $view = (isset($_GET['view'])) ? $_GET['view'] : 'table';
+  $bookings = new CB_Booking_Query($args, 'future');
+  $view = ( isset($_GET['view']) ) ? sanitize_text_field($_GET['view']) : 'table';
   $admin_page = new CB_Admin_Page($view, $bookings);
   echo $admin_page->html;
 }
@@ -195,7 +195,7 @@ class CB_Admin_Page {
 
   public function page_header(){
     $content = '<h1 class="wp-heading-inline">Charter
-  Bookings</h1><a  class="page-title-action" href="https://msp-media.org/wordpress-plugins/charter-bookings/" target="_blank">Add Booking</a><hr class="wp-header-end">';
+  Bookings</h1><hr class="wp-header-end">';
     return $content;
   }
 
@@ -236,20 +236,14 @@ class CB_Admin_Page {
     $content .= '</div>';
     return $content;
   }
-
   private function tablenav(){
     if(session_status() === PHP_SESSION_NONE){session_start();}
-    //echo '<pre>'; var_dump($_SESSION);echo '</pre>';
     $content = '<div class="float-left">';
     $content .= '
     <label for="filter-dates" class="screen-reader-text">Filter By Booking Date</label>
-      <select name="date_range" id="date_range">
-        <option ';
-    $content .=  ( isset($_SESSION['cb_admin_date_range']) && $_SESSION['cb_admin_date_range'] == 'all')
-      ? ' selected '
-      : ' ';
-    $content .= ' value="all">All Bookings</option>
-        <option ';
+      <select name="date_range" id="date_range">';
+    
+    $content .= '<option ';
     $content .= ( !isset($_SESSION['cb_admin_date_range']) || (isset($_SESSION['cb_admin_date_range']) && $_SESSION['cb_admin_date_range'] == 'future'  ))
       ? ' selected '
       : ' ';
@@ -261,9 +255,7 @@ class CB_Admin_Page {
       : ' ';
     $content .= ' value="past">Past Bookings</option>
       </select>';
-    //$content .= '<input type="submit" name="filter_date_range" id="filter_date_range" class="button" value="Filter">';
     $content .= '</div>';
-    //$content .= '</form>';
     return $content;
   }
 
