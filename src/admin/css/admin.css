@@ -1,5 +1,26 @@
 
+
 /* settings */
+@media screen and (min-width: 782px){
+  .cb-admin-flex {
+    display: flex;
+  }
+}
+
+@media screen and (min-width: 782px){
+
+.cb-admin-flex div{
+  padding: 0 15px;
+}
+  .cb-admin-flex div:first-child{
+    padding-left: 0px;
+  }
+}
+
+.cb-admin-booking-actions a{
+  min-width: 70%;
+  text-align: center;
+}
 
 
 .cb-hold-sunset-initiation p {
@@ -52,6 +73,7 @@
 
 
  /* Admin Menu Single Booking */
+
   .cb-hold-booking .cb-book-now-container input {
     width: 100%;
     margin-bottom: 3px
@@ -66,18 +88,34 @@
 .cb-open-booking {
   cursor: pointer;
 }
- .cb-hold-booking {
-   position: fixed;
-   background: #fff;
-   z-index: 100000;
-   left: 50%;
-   top: 50%;
-   -webkit-transform: translate(-50%,-50%);
-   -ms-transform: translate(-50%,-50%);
-   transform: translate(-50%,-50%);
-   max-width: 100%;
-   min-width: 500px;
- }
+
+.cb-hold-booking {
+  position: fixed;
+  max-width: 100%;
+  background: #fff;
+  z-index: 100000;
+}
+
+@media screen and (max-width: 782px){
+  .cb-hold-booking {
+    top: 50px;
+    width: 100vw;
+    height: auto;
+    max-height: 100%;
+  }
+}
+
+@media screen and (min-width: 782px){
+  .cb-hold-booking {
+    min-width: 600px;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+  }
+}
+
 
 .cb-booking-modal-backdrop {
   position: fixed;
@@ -143,7 +181,7 @@
    font-size: 0.9em;
  }
 
-.cb-admin-bookings .order-status {
+.cb-admin-bookings .order-status,  .cb-hold-booking .order-status{
   line-height: 26px;
   padding: 0 10px !important;
   display: -webkit-inline-box;
@@ -160,17 +198,26 @@
   max-width: 100%;
   }
 
-.cb-admin-bookings .status-confirmed {
+.cb-hold-booking .order-status {
+  margin-top: 15px;
+}
+
+.cb-admin-bookings .status-confirmed, .cb-hold-booking .status-confirmed{
    background: #c6e1c6;
    color: #5b841b;
   }
 
-.cb-admin-bookings .status-reserved {
+.cb-admin-bookings .status-reserved, .cb-hold-booking .status-reserved{
   background: #f8dda7;
   color: #94660c;
 }
 
-.cb-admin-bookings .status-pending-finalbalance {
+.cb-admin-bookings .status-reserved, .cb-hold-booking .status-on-hold{
+  background: #f8dda7;
+  color: #94660c;
+}
+
+.cb-admin-bookings .status-pending-finalbalance, .cb-hold-booking .cb-admin-bookings .status-pending-finalbalance{
   background: #eba3a3;
   color: #761919;
 }
@@ -221,4 +268,36 @@
 
 .woocommerce_page_cb-bookings .week-view .hold-bookings .confirmed  a {
   color: #5b841b;
+}
+
+.woocommerce_page_cb-bookings .week-view .hold-bookings .on-hold  a {
+  color: #777;
+}
+
+#woocommerce-product-data .form-field {
+  padding: 5px 20px 0px 162px !important;
+}
+
+#woocommerce-product-data .form-field h4 {
+  margin-bottom: 0px;
+}
+
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.alert {
+  position: relative;
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}
+
+.alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
 }

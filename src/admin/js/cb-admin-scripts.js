@@ -66,6 +66,23 @@ $(document).on('click','.cb-open-booking',function(event){
 		});
 });
 
+$(document).on('click','.cb-cancel-booking',function(event){
+	var errMessage = '<div class="error"><p>CAUTION: You cannot directly cancel a booking. To cancel a booking, you must cancel any associated orders within the order administration. </p></div>';
+  $('.cb-booking-container').html(errMessage);
+	var data = {
+		'action': 'cb_admin_show_order_links',
+		'booking_id': $(this).attr('booking_id'),
+		'errMessage': errMessage
+		}
+	$.post(chbk_admin_scripts_vars.admin_ajax, data, function(response) {
+			let content = data.errMessage + response.html;
+      $('.cb-booking-container').html(content);
+      $('.cb-booking-container').css('max-height', '400px');
+      $('.cb-booking-container').css('overflow-y', 'scroll');
+		});
+});
+
+
 //cb-close-booking
 $(document).on('click','.cb-close-booking',function(event){
   $('.cb-hold-booking').html('');

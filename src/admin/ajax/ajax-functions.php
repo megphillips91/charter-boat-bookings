@@ -124,4 +124,20 @@ function cb_admin_filter_date_range_callback(){
   $response['html']=$admin_page->html;
   wp_send_json($response);
 }
+
+add_action( 'wp_ajax_cb_admin_show_order_links', __NAMESPACE__ . '\\cb_admin_show_order_links_callback' );
+function cb_admin_show_order_links_callback(){
+  $booking = new CB_Booking($_POST['booking_id']);
+  $relative_rez = '/post.php?post='.$booking->orderid_reservation.'&amp;action=edit';
+  $relative_balance = '/post.php?post='.$booking->orderid_reservation.'&amp;action=edit';
+  $content = '<strong>Reservation Order#:</strong>
+  <a target="_blank" href="'.admin_url($relative_rez).'">'.$booking->orderid_reservation.'</a><br>';
+  $content .= ($booking->orderid_balance != NULL) ? '<strong>Balance Order#:</strong> <a target="_blank"
+  href="'.admin_url($relative_balance).'">'.$booking->orderid_balance.'</a>'.$booking->orderid_balance.'</a>': '';
+  $response = array();
+  $response['booking'] = $booking;
+  $response['html'] = $content;
+  wp_send_json($response);
+}
+
 ?>
