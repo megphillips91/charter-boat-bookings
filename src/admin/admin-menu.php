@@ -18,7 +18,7 @@ function cb_charter_bookings_submenu_page_callback (){
     'future'=>'future'
   );
   $bookings = new CB_Booking_Query($args, 'future');
-  $view = ( isset($_GET['view']) ) ? ess_attr($_GET['view']) : 'table';
+  $view = ( isset($_GET['view']) ) ? sanitize_text_field($_GET['view']) : 'table';
   $admin_page = new CB_Admin_Page($view, $bookings);
   echo $admin_page->html;
 }

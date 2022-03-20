@@ -38,7 +38,8 @@ class CB_Booking {
     public function __construct($id = NULL){
       if($id != NULL){
         global $wpdb;
-        $booking = $wpdb->get_row("select * from wp_charter_bookings where id = $id LIMIT 1");
+        $qry = "select * from ".$wpdb->prefix."charter_bookings where id = %d LIMIT 1";
+        $booking = $wpdb->get_row( $wpdb->prepare($qry, $id) );
         if($booking){foreach($booking as $key=>$value){
           $this->$key = $value;
         }}
