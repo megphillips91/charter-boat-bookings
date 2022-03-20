@@ -19,7 +19,7 @@ function cb_charter_bookings_submenu_page_callback (){
   );
   $bookings = new CB_Booking_Query($args, 'future');
   $view = ( isset($_GET['view']) ) ? sanitize_text_field($_GET['view']) : 'table';
-  $admin_page = new CB_Admin_Page($view, $bookings);
+  $admin_page = new CB_Admin_Page($view, $bookings, 'future');
   echo $admin_page->html;
 }
 add_action('admin_menu', __NAMESPACE__ . '\\register_cb_charter_bookings_submenu', 10);
@@ -173,8 +173,10 @@ class CB_Admin_Page {
   public $bookings;
   public $html;
   public $view_html;
+  public $date_range;
 
-  public function __construct($view, $bookings){
+  public function __construct($view, $bookings, $date_range){
+    $this->date_range = $date_range;
     $this->view = $view;
     $this->bookings = $bookings;
     $this->html = '<div class="wrap">
@@ -236,6 +238,7 @@ class CB_Admin_Page {
     $content .= '</div>';
     return $content;
   }
+  
   private function tablenav(){
     if(session_status() === PHP_SESSION_NONE){session_start();}
     $content = '<div class="float-left">';
@@ -244,13 +247,13 @@ class CB_Admin_Page {
       <select name="date_range" id="date_range">';
     
     $content .= '<option ';
-    $content .= ( !isset($_SESSION['cb_admin_date_range']) || (isset($_SESSION['cb_admin_date_range']) && $_SESSION['cb_admin_date_range'] == 'future'  ))
+
+    $content .= ( 'future' === $this->date_range )
       ? ' selected '
       : ' ';
     $content .= 'value="future">Future Bookings</option>
         <option ';
-    $content .= (isset($_SESSION['cb_admin_date_range'])
-    && ($_SESSION['cb_admin_date_range'] == 'past') )
+    $content .= ( 'past' === $this->date_range)
       ? ' selected '
       : ' ';
     $content .= ' value="past">Past Bookings</option>
