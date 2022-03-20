@@ -11,6 +11,7 @@ function cb_lazyload_global_calendar_callback(){
   foreach($_POST as $key=>$value){
     $$key = sanitize_text_field($value);
   }
+  $list_action = NULL;
   $response = array();
   $calendar = new CB_Global_Calendar(NULL, NULL, NULL, NULL, $list_action);
   $response=$calendar;

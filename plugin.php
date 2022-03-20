@@ -7,14 +7,14 @@
  * Author: megphillips91
  * Contributors: megphillips91
  * Author URI: http://msp-media.org/
- * Version: 1.7
+ * Version: 1.7.1
  * License: GPL2+
  * http://www.gnu.org/licenses/gpl-3.0.html
  *
  */
 
  /*
- Charter Boat Bookings is free software: you can redistribute it and/or modify
+ This is the re-base from 1.7 on svn. I need to get the changes from yesterday in here. Charter Boat Bookings is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 2 of the License, or
  any later version.
