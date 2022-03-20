@@ -115,7 +115,7 @@ class CB_Booking {
     public function save_balance_id($balance_id){
       global $wpdb;
       $wpdb->update(
-        'wp_charter_bookings',
+        $wpdb->prefix.'charter_bookings',
         array('balance_id'=>$balance_id),
         array('id'=>$this->id)
       );
@@ -125,7 +125,7 @@ class CB_Booking {
     public function save_orderid_balance($orderid_balance){
       global $wpdb;
       $wpdb->update(
-        'wp_charter_bookings',
+        $wpdb->prefix.'charter_bookings',
         array('orderid_balance'=>$orderid_balance),
         array('id'=>$this->id)
       );
@@ -138,7 +138,7 @@ class CB_Booking {
     public function set_booking_status($status){
       global $wpdb;
       $wpdb->update(
-        'wp_charter_bookings',
+        $wpdb->prefix.'charter_bookings',
         array('booking_status'=>$status),
         array('id'=>$this->id)
       );
@@ -160,7 +160,7 @@ class CB_Booking {
       global $wpdb;
       if($this->field != $value){
         $wpdb->update(
-          'wp_charter_bookings',
+          $wpdb->prefix.'charter_bookings',
           array($field=>$value),
           array('id'=>$this->id)
         );
@@ -204,7 +204,7 @@ class CB_Booking {
     public function delete(){
       global $wpdb;
       $wpdb->delete(
-        'wp_charter_bookings',
+        $wpdb->prefix.'charter_bookings',
         array('id'=>$this->id)
       );
     }
@@ -213,7 +213,7 @@ class CB_Booking {
       $this->persons = $persons;
       global $wpdb;
       $wpdb->update(
-        'wp_charter_bookings',
+        $wpdb->prefix.'charter_bookings',
         array('persons'=>$persons),
         array('id'=>$this->id)
       );
@@ -347,7 +347,7 @@ class CB_Booking_Factory  {
     $args = $this->set_order_args($order_id, $args);
     global $wpdb;
     $wpdb->insert(
-      'wp_charter_bookings',
+      $wpdb->prefix.'charter_bookings',
       $args
     );
     return $wpdb->insert_id;
