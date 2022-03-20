@@ -9,9 +9,10 @@ add_action( 'wp_ajax_cb_lazyload_global_calendar', __NAMESPACE__ . '\\cb_lazyloa
 
 function cb_lazyload_global_calendar_callback(){
   foreach($_POST as $key=>$value){
-    $$key = sanitize_text_field($value);
+    $key = sanitize_text_field($value);
   }
   $response = array();
+  $list_action = (empty($list_action)) ? NULL : $list_action;
   $calendar = new CB_Global_Calendar(NULL, NULL, NULL, NULL, $list_action);
   $response=$calendar;
   wp_send_json($response);

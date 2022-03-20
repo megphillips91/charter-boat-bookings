@@ -15,7 +15,7 @@ class CB_Locations {
 
   private function get_number(){
     global $wpdb;
-    $qry = "select option_name from ".$wpdb->prefix."options
+    $qry = "select option_name from wp_options
 where option_name like '%cb_location_name_%'
 AND option_name NOT like '%dep_cb_location_name_%'";
     $results = $wpdb->get_results($qry);
@@ -64,7 +64,7 @@ class CB_Location {
 
   private function get_id($name){
     global $wpdb;
-    $qry = "select option_name from ".$wpdb->prefix."options where option_value = '".$name."' and option_name like '%cb_location_name_%' limit 1";
+    $qry = "select option_name from wp_options where option_value = '".$name."' and option_name like '%cb_location_name_%' limit 1";
     $row = $wpdb->get_row($qry);
     $str = $row->option_name;
     preg_match_all('!\d+!', $str, $matches);

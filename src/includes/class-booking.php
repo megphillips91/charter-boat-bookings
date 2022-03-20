@@ -38,7 +38,8 @@ class CB_Booking {
     public function __construct($id = NULL){
       if($id != NULL){
         global $wpdb;
-        $booking = $wpdb->get_row("select * from ".$wpdb->prefix."charter_bookings where id = $id LIMIT 1");
+        $qry = "select * from ".$wpdb->prefix."charter_bookings where id = %d LIMIT 1";
+        $booking = $wpdb->get_row( $wpdb->prepare($qry, $id) );
         if($booking){foreach($booking as $key=>$value){
           $this->$key = $value;
         }}
@@ -279,7 +280,7 @@ class CB_Booking_Factory  {
 */
   private function instantiate_by_reservation($reservation_id){
     global $wpdb;
-    $booking = $wpdb->get_row("select * from ".$wpdb->prefix."charter_bookings where reservation_id = $reservation_id");
+    $booking = $wpdb->get_row("select * from wp_charter_bookings where reservation_id = $reservation_id");
     $booking = new CB_Booking($booking->id);
     return $booking;
   }
@@ -295,7 +296,7 @@ class CB_Booking_Factory  {
  */
   private function instantiate_by_finalbalance($balance_id){
     global $wpdb;
-    $booking = $wpdb->get_row("select * from ".$wpdb->prefix."charter_bookings where balance_id = $balance_id");
+    $booking = $wpdb->get_row("select * from wp_charter_bookings where balance_id = $balance_id");
     $booking = new CB_Booking($booking->id);
     return $booking;
   }
@@ -312,7 +313,7 @@ class CB_Booking_Factory  {
       if(!$has_persons){
         //then query for any booking of this variation.
         global $wpdb;
-        $booking = $wpdb->get_row("select * from ".$wpdb->prefix."charter_bookings where reservation_id = $reservation_id");
+        $booking = $wpdb->get_row("select * from wp_charter_bookings where reservation_id = $reservation_id");
         if($booking == NULL){
           return false;
         } else {
@@ -710,7 +711,7 @@ class CB_Bookings {
 
   public function __construct(){
     global $wpdb;
-    $records = $wpdb->get_results("select id from ".$wpdb->prefix."charter_bookings order by charter_date ASC");
+    $records = $wpdb->get_results("select id from wp_charter_bookings order by charter_date ASC");
     $bookings = array();
     foreach ($records as $record){
       $bookings[] = new CB_Booking($record->id);

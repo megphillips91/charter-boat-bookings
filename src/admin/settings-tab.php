@@ -3,7 +3,7 @@ namespace Charter_Bookings;
 use \Datetime;
 use \DateTimeZone;
 use \DateInterval;
-use \WC_Admin_Settings;
+// This is just a form sample
 
 // Add a new section to WooCommerce > Settings > Products
 function bookings_products_section( $sections ) {
@@ -14,29 +14,6 @@ add_filter( 'woocommerce_get_sections_products', __NAMESPACE__ . '\\bookings_pro
 
 
 function cb_location_settings($bookings_settings){
-	$html_upgrade = '<div>
-	<p><em>NOTE: I have a toddler and kids. Phone calls are difficult and I have to schedule them out. My work hours are 2am-7am ET and 10am-2pm ET. If you request support through the <a href="https://wordpress.org/support/plugin/charter-boat-bookings/">WordPress support forum</a> I will get back to you. You can also <a href="https://msp-media.org/charter-boat-bookings/">contact me directly on my website</a></em></p>
-	<ul><li>Set more charter durations</li>
-	<li>Close all charters certain days of week</li>
-	<li>Offer per person charters</li>
-	<li>Certain charters on certain days only</li>
-	<li>Show FAQs in product tabs</li>
-	<li>Show Charter terms in product tabs</li>
-	<li>...and more for only $249</li>
-	</ul>
-	</div>
-	';
-	$bookings_settings[] =	array(
-		'title'     => __( 'Upgrade', 'cb-bookings' ),
-			'type'      => 'title',
-			'desc'     => __( $html_upgrade, 'woocommerce' ),
-			'id'        => 'cb_bookings_upgrade_section',
-	);
-	$bookings_settings[] = array(
-		'type'  => 'sectionend',
-		'id'    => 'cb_bookings_location_section',
-	);
-
 	/* settings for captain and capacity */
 	$bookings_settings[] =	array(
 		'title'     => __( 'Vessel', 'cb-bookings' ),
@@ -47,34 +24,32 @@ function cb_location_settings($bookings_settings){
 	$args = array(
 		'role__in'=>array('administrator', 'shop_manager'),
 		'fields'=>array('ID','display_name')
-		//'fields'=>'all_with_meta'
 	);
 	$users = get_users($args);
-	//echo '<pre>'; var_dump($users); echo '</pre>';
 	$options = array();
 	foreach($users as $user){
 		$options[$user->ID]=$user->display_name;
 	}
 	$bookings_settings[] = array(
-		'title' => 'Captain',
+		'title' => __( 'Captain', 'cb-bookings' ),
 		 'type' => 'select',
-		'desc_tip' => 'User must be at least a shop manager to be included in the options',
+		'desc_tip' => __( 'User must be at least a shop manager to be included in the options', 'cb-bookings' ),
 		'default'=>'',
 			'id'=>'cb_captain',
 			'options'=>$options,
 	 );
 
 	 $bookings_settings[] = array(
- 	 'title' => 'Capacity',
+ 	 'title' => __( 'Capacity', 'cb-bookings' ),
  		'type' => 'number',
- 		'desc_tip' => 'Maximum number of guests allowed on board (integer required)',
+ 		'desc_tip' => __( 'Maximum number of guests allowed on board (integer required)', 'cb-bookings' ),
  		 'id'=>'cb_booking_capacity'
  	);
 
 	$bookings_settings[] = array(
-	'title' => 'Open Weather API Key',
+	'title' => __( 'Open Weather API Key', 'cb-bookings' ),
 	'type'=>'text',
-	'desc_tip' => 'Copy and Paste Your Open Weather API Key here.',
+	'desc_tip' => __( 'Copy and Paste Your Open Weather API Key here.', 'cb-bookings' ),
 	'id'=>'cb_open_weather_key'
  );
 
@@ -90,12 +65,13 @@ function cb_location_settings($bookings_settings){
 			'id'        => 'cb_bookings_location_section',
 	);
 
+
 	$bookings_settings[] = array(
 		'type'  => 'sectionend',
 		'id'    => 'cb_bookings_location_section',
 	);
-//to add support for locations: get_option('cb_number_locations')
-	for($x = 1; $x <= 1; $x++){
+
+	for($x = 1; $x <= get_option('cb_number_locations'); $x++){
 		$titlenum = $x + 1;
 		$bookings_settings[] =	array(
 			'title'     => __( 'Location ', 'cb-bookings' ),
@@ -103,31 +79,31 @@ function cb_location_settings($bookings_settings){
 				'id'        => 'cb_bookings_location_'.$x.'_section',
 		);
 		$bookings_settings[] = array(
-		 'title' => 'Name',
+		 'title' => __( 'Name', 'cb-bookings' ),
 			'type' => 'text',
-			'desc_tip' => 'Name to appear at checkout',
+			'desc_tip' => __( 'Name to appear at checkout', 'cb-bookings' ),
 			 'id'=>'cb_location_name_'.$x
 		);
 
 		$bookings_settings[] = array(
-		 'title' => 'Address',
+		 'title' => __( 'Address', 'cb-bookings' ),
 			'type' => 'text',
-			'desc_tip' => 'Format: Street, City, State, Zip, Country',
+			'desc_tip' => __( 'Format: Street, City, State, Zip, Country', 'cb-bookings' ),
 			 'id'=>'cb_location_address_'.$x
 		);
 		$bookings_settings[] = array(
-		 'title' => 'Latitude',
+		 'title' => __( 'Latitude', 'cb-bookings' ),
 			'type' => 'text',
-			'desc_tip' => 'Enter the latitude of this charter location',
+			'desc_tip' => __( 'Enter the latitude of this charter location', 'cb-bookings' ),
 			 'id'=>'cb_location_latitude_'.$x
 		);
 		$bookings_settings[] = array(
-		 'title' => 'Longitude',
+		 'title' => __( 'Longitude', 'cb-bookings' ),
 			'type' => 'text',
-			'desc_tip' => 'Enter the longitude of this charter location',
+			'desc_tip' => __( 'Enter the longitude of this charter location', 'cb-bookings' ),
 			 'id'=>'cb_location_longitude_'.$x
 		);
-		
+
 		$bookings_settings[] = array(
 			'type'  => 'sectionend',
 			'id'    => 'cb_bookings_location_'.$x.'_section',
@@ -135,13 +111,15 @@ function cb_location_settings($bookings_settings){
 
 	}
 
-
-
 	return $bookings_settings;
 }
 
 function cb_charter_schedule_settings($bookings_settings){
 	$sunset_times = new CB_Sunset_Times();
+	$sunset_message = (get_option('cb_sunset_api') == 'yes' && $sunset_times->number_sunsets_needed == 0)
+		?	'Sunset API is enabled and sunset times are loaded.'
+		: 'If enabled, the start time of sunset charters will be a calculated value based on the actual sunset time and duration of the charter. The charter will be scheduled to end exactly at civil twilight so that your boat will be sailing through the sunset and dock before pitch dark. <div class="cb-hold-sunset-initiation"></div>';
+
 
 	$bookings_settings[] =
 		array(
@@ -151,9 +129,9 @@ function cb_charter_schedule_settings($bookings_settings){
 				'id'        => 'cb_bookings_global_section',
 		);
 		$bookings_settings[] = array(
-			'title' => 'Open Days',
+			'title' => __( 'Open Days', 'cb-bookings' ),
 			 'type' => 'multiselect',
-			'desc_tip' => 'Which days of the week is your business open and offering charter bookings?',
+			'desc_tip' => __( 'Which days of the week is your business open and offering charter bookings?', 'cb-bookings' ),
 			'default'=>'',
 			'class'=>'cb-admin-multiselect',
 				'id'=>'cb_open_days',
@@ -168,29 +146,37 @@ function cb_charter_schedule_settings($bookings_settings){
 				),
 		 );
 		 $bookings_settings[] =array(
-			 'title' => 'Weeks In Advance',
+			 'title' => __( 'Weeks In Advance', 'cb-bookings' ),
 				'type' => 'text',
 				'default' => '12',
-				'desc_tip' => 'Max number of future weeks that are open for booking.  Enter -1 for no limit on advance bookings',
+				'desc_tip' => __( 'Max number of future weeks that are open for booking.  Enter -1 for no limit on advance bookings', 'cb-bookings' ),
 				 'id'=>'cb_weeks_advance'
 			);
 		 $bookings_settings[] =array(
-			 'title' => 'Durations (h)',
+			 'title' => __( 'Durations (h)', 'cb-bookings' ),
 				'type' => 'textarea',
 				'default' => '2 | 4 | 6| 8',
-				'desc_tip' => 'In hours, enter a list of durations separated by the pipe. Ex: 2 hour sailing charter or a 4 hour sailing charter',
+				'desc_tip' => __( 'In hours, enter a list of durations separated by the pipe. Ex: 2 hour sailing charter or a 4 hour sailing charter', 'cb-bookings' ),
 				 'id'=>'cb_durations'
 			);
 		//cb_same_day_buffer
 		$bookings_settings[] =array(
-			'title' => 'Buffer Between Charters (m)',
+			'title' => __( 'Buffer Between Charters (m)', 'cb-bookings' ),
 			 'type' => 'number',
 			 'default' => '30',
-			 'desc_tip' => 'In minutes (1-120), please set a minimum number of minutes as a buffer between charters.',
+			 'desc_tip' => __( 'In minutes (1-120), please set a minimum number of minutes as a buffer between charters.', 'cb-bookings' ),
 				'id'=>'cb_same_day_buffer'
 		 );
-		
-
+		 /*
+		$bookings_settings[] = array(
+			'title' => 'Sunset API',
+			'desc'     => __( $sunset_message ),
+			 'type' => 'checkbox',
+			 'class'=>'cb-enable-sunset',
+			 'default' => 'yes',
+			 'id'=>'cb_sunset_api'
+		 );
+*/
 		$bookings_settings[] =		array(
 					'type'  => 'sectionend',
 					'id'    => 'cb_bookings_global_section',
@@ -206,9 +192,9 @@ function cb_blackout_dates($bookings_settings){
 					'id'        => 'cb_bookings_blackout_section',
 			);
 	$bookings_settings[] = array(
-		 'title' => 'Add Blackout Date Range',
+		 'title' => __( 'Add Blackout Date Range', 'cb-bookings' ),
 		 'type' => 'add_setting',
-		 'desc_tip' => 'Add a start and end date for a blackout period',
+		 'desc_tip' => __( 'Add a start and end date for a blackout period', 'cb-bookings' ),
 			 'id'=>'cb_add_blackout',
 			 'css'=>'',
 			 'name'=>'Add blackout',
@@ -227,17 +213,17 @@ function cb_blackout_dates($bookings_settings){
 						'id'        => 'cb_bookings_blackout_'.$x.'_section',
 				);
 			$bookings_settings[] =		array(
-						'title' => 'Start Date',
+						'title' => __( 'Start Date', 'cb-bookings' ),
 						 'type' => 'date',
-						'desc_tip' => 'Enter the start date of black out period',
+						'desc_tip' => __( 'Enter the start date of black out period', 'cb-bookings' ),
 						'name'=>'Start Date',
 							'id'=>'cb_blackout_start_'.$x,
 					 );
 
 		 $bookings_settings[] =		array(
-						'title' => 'End Date',
+						'title' => __( 'End Date', 'cb-bookings' ),
 						 'type' => 'date',
-						'desc_tip' => 'Enter the end date of black out period',
+						'desc_tip' => __( 'Enter the end date of black out period', 'cb-bookings' ),
 						'name'=>'End Date',
 							'id'=>'cb_blackout_end_'.$x
 					 );
@@ -257,54 +243,21 @@ function cb_blackout_dates($bookings_settings){
 					);
 		}
 
+
+
 		return $bookings_settings;
 }
 
-function cb_pro_display_settings($bookings_settings){
-
-	$bookings_settings[] =		array(
-				'title'     => __( 'Display Settings', 'cb-bookings' ),
-					'type'      => 'title',
-					'desc'     => __( 'Settings that affect the display of charter booking pages and shortcodes, etc. If you add a slug for the tabs, all of the content from the slugs indicated will be pulled into tabs on the charter booking pages. This puts the right information in front of the customer at time of booking.', 'woocommerce' ),
-					'id'        => 'cb_bookings_display_section',
-			);
-	$bookings_settings[] =array(
-				'title' => 'WooCommerce Tabs: Terms',
-				 'type' => 'text',
-				 'default' => '',
-				 'desc_tip' => 'Copy and paste the slug of charter terms and conditions page. This is not the website terms, but the special terms for all charters (ex: you can bring  your own beer and we provide a cooler).',
-					'id'=>'cb_terms_slug'
-			 );
-	$bookings_settings[] =array(
-		 				'title' => 'WooCommerce Tabs: FAQs',
-		 				 'type' => 'text',
-		 				 'default' => '',
-		 				 'desc_tip' => 'Copy and paste the slug of charter FAQs page - the frequently asked questions for all charters (ex: Can I bring beer? Are Kids allowed?)',
-		 					'id'=>'cb_faqs_slug'
-		 			 );
-
-	$bookings_settings[] =		array(
-				 'type'  => 'sectionend',
-				 'id'    => 'cb_bookings_display_section',
-			 );
-
-	return $bookings_settings;
-}
-
-
 // Add Settings for new section
 function add_bookings_products_settings( $settings, $current_section ) {
-	//$license = new MSP_License();
 	// make sure we're looking only at our section
 	if ( 'cb_bookings' === $current_section ) {
-		
-			$bookings_settings = array();
-			$bookings_settings = cb_location_settings($bookings_settings);
-			//$bookings_settings = cb_charter_schedule_settings($bookings_settings);
-			//$bookings_settings = cb_blackout_dates($bookings_settings);
-			//$bookings_settings = cb_pro_display_settings($bookings_settings);
-			return $bookings_settings;
-		
+		$bookings_settings = array();
+		$bookings_settings = cb_location_settings($bookings_settings);
+		//$bookings_settings = cb_charter_schedule_settings($bookings_settings);
+		//$bookings_settings = cb_blackout_dates($bookings_settings);
+		return $bookings_settings;
+
 	} else {
 		// otherwise give us back the other settings
 		return $settings;
@@ -328,10 +281,10 @@ function cb_admin_field_cb_hr( $value ){
 							</td></tr>';
 	echo $content;
 }
-add_action( 'woocommerce_admin_field_cb_hr' , __NAMESPACE__ . '\\cb_admin_field_cb_hr' );
+add_action( 'woocommerce_admin_field_cb_hr' , 'cb_admin_field_cb_hr' );
 
 /* button which uses ajax to add an additional setting of specified type */
-function cb_admin_add_setting( $value ){
+function chbk_admin_add_setting( $value ){
 		        $option_value = (array) WC_Admin_Settings::get_option( $value['id'] );
 		        $description = WC_Admin_Settings::get_field_description( $value );
 		        ?>
@@ -356,10 +309,10 @@ function cb_admin_add_setting( $value ){
 
 		   <?php
 }
-add_action( 'woocommerce_admin_field_add_setting' , __NAMESPACE__ . '\\cb_admin_add_setting' );
+add_action( 'woocommerce_admin_field_add_setting' , __NAMESPACE__ . '\\chbk_admin_add_setting' );
 
 /* date range with start and end date*/
-function cb_admin_date_range($value){
+function chbk_admin_date_range($value){
 	$option_value = (array) WC_Admin_Settings::get_option( $value['id'] );
 	$description = WC_Admin_Settings::get_field_description( $value );
 
@@ -383,6 +336,6 @@ function cb_admin_date_range($value){
 		</tr>
 		<?php
 }
-add_action( 'woocommerce_admin_field_date_range' , __NAMESPACE__ . '\\cb_admin_date_range' );
+add_action( 'woocommerce_admin_field_date_range' , __NAMESPACE__ . '\\chbk_admin_date_range' );
 
 ?>

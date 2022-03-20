@@ -71,7 +71,7 @@ class CB_Sunset_Times {
 
   private function set_max_known_sunset(){
     global $wpdb;
-    $max_sunset = $wpdb->get_row("select max(sunset) as 'max_sunset' from ".$wpdb->prefix."cb_sunset_times a");
+    $max_sunset = $wpdb->get_row("select max(sunset) as 'max_sunset' from wp_cb_sunset_times a");
     $this->max_known_sunset = new DateTime($max_sunset->max_sunset, new DateTimeZone($this->timezone));
   }
 
@@ -179,7 +179,7 @@ class CB_Sunset_Time {
    */
   private function set_sunset(){
     global $wpdb;
-    $qry = "select * from ".$wpdb->prefix."cb_sunset_times
+    $qry = "select * from wp_cb_sunset_times
       where location_name='".$this->location_name."' AND date(sunset) = '".$this->date."'";
     $result = $wpdb->get_row($qry);
     if($result){

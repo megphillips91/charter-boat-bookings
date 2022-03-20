@@ -1,30 +1,54 @@
-=== Charter Boat Bookings ===
+# Charter Boat Bookings #
 Contributors: megphillips91
+
 Donate link: https://msp-media.org/product/support-open-source/
-Tags: Charter Boats, Bookings, WooCommerce, Tours, Tour Operator, Booking Calendar, Booking System, Reservations, Availability Calendar
-Requires at least: 5.3
-Tested up to: 5.5
-Requires PHP: 7.1.2
-Stable tag: 1.8
+
+Tags: sailing charter reservations, fishing charter bookings, WooCommerce boat booking system, boat reservation software, online boat booking, boat charter software, charter boat booking software, charter booking software
+
+Requires at least: 5.1
+
+Tested up to: 5.9.2
+
+Requires PHP: 5.6.4
+
+Stable tag: trunk (1.8)
+
+WC requires at least: 5.7
+
+WC tested up to: 6.2
+
 License: GPLv2 or later
+
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
 
 Charter Boat Bookings is a boat booking system for captains. Use Woocommerce for reservations - Sunset Sails, Daysails, Sportfishing, Inshore Fishing
 
-== Description ==
+## Description ##
 
-## Summary ##
+### Summary ###
 Charter Boat Bookings is a WooCommerce extension specifically designed to take reservations for Charter Boats. Built to suit the business needs of Sailing Charters, Fishing Charters, Sportfishing, Fishing Guides, even Duck Hunting Guides. This WordPress charter boat booking system includes industry specific features including weather predictions and sunset dependent products. Book private or per person charters, and set your maximum passenger capacity. Minimize refunds with built-in reservation fee and final balance.
 
-This is the Lite version of Charter Boat Bookings and available here in the WordPress Plugin Repository for free use. If you are interested in more features, please do consider upgrading to [Charter Boat Bookings Pro](https://msp-media.org/product/charter-boat-bookings-owner-operator/). Charter Bookings is boat reservation software. It is not a general reservation system for tour operators that has been adapted into an online boat booking system. The target users for this plugin are owner-operator captains with no code writing expertise or agents developing an e-commerce website for captains. The dashboard has as few settings as possible to set up a typical sailing or fishing schedule and take paid reservations, manage availability, and communicate effectively with your customers.
+This plugin works as boat reservation software. It is not a general reservation system for tour operators that has been adapted into an online boat booking system. The target users for this plugin are owner-operator captains with no code writing expertise. The dashboard has as few settings as possible to set up a typical sailing or fishing schedule and take paid reservations, manage availability, and communicate effectively with your customers.
 
-### Background ###
+## Changelog ##
+### March 19-2022 ###
+- Meg rebased from svn trunk on Mar-19,2022 due to plugin suspension for potential sql injection vulnerability
+- Please review the changes to the CB_Booking_Query Class which is used by the availabilty, charter-confirmation, admin ajax calls to query the bookings from custom database table wp_cb_bookings
+- Added method args_are_valid which returns true or false on checking data type
+- used $wpdb->prepare within the query factory methods to prepare the query and then pass that back into the class and run the query on instantiation.
+- if you have any questions, please feel free to reach out to me on issues tab here. 
+- cheers :)
+
+
+
+#### Background ####
 Developed by a team with more than 40 combined years experience within all aspects of the charter industry: daysailing, bareboat charters, inshore fishing charters, sportfishing charters, marina management, and even fleet management.
 
-Designed to scale with your business from the ground up, Charter Boat Bookings is offered in two versions: Charter Bookings Lite and [Owner-Operator Premium](https://msp-media.org/product/charter-boat-bookings-owner-operator/). The free version available here will support a single boat in day charter business - fishing, sailing, or pleasure trips. The premium version offers more features and flexibility. Please check it out.
+Designed to scale with your business from the ground up, Charter Boat Bookings is offered in two versions: Charter Bookings Lite and [Charter Bookings Pro](https://msp-media.org/wordpress-plugins/charter-bookings/). The free version available here will support a single boat in day charter business - fishing, sailing, or pleasure trips. The premium version offers more features and flexibility. Please check it out.
 
-### Features ###
-**Weather Prediction:** Product listings and single product pages connect with the OpenWeather API so that they can show accurate wind and weather prediction for up to five days in the future. The weather is volatile, and the charter boat industry is depends on the weather. Refunds are potentially the most challenging aspect of charter boat business management. Showing your customers the weather conditions and wind speed/direction before they book helps naturally shift customers into a better customer experience and minimize refunds. This plugin relies on OpenWeather API, and you must register with their site in order to use their weather predictions and this plugin.
+#### Features ####
+**Weather Prediction:** Product listings and single product pages connect with the OpenWeather API so that they can show accurate wind and weather prediction for up to five days in the future. The weather is volatile, and the charter boat industry is depends on the weather. Refunds are potentially the most challenging aspect of charter boat business management. Showing your customers the weather conditions and wind speed/direction before they book helps naturally shift customers into a better customer experience and minimize refunds.
 
 **Sunset Products:** Create sunset sails or sunset fishing trips that dynamically adjust to your location’s actual sunset time by connecting with the Sunrise-Sunset API. Sunset products calculate start time by backing out the duration of the charter from civil twilight so that you are back at the dock safely before dark, but your guests enjoy the most beautiful sunset colors the sky has to offer.
 
@@ -34,8 +58,6 @@ Charter Boat Bookings helps you better manage your cash flow by splitting the to
 
 
 **Manage Orders:** Each booking links to the reservation and final balance order within the bookings admin menu. This helps you administrate charter booking orders just as you would any other WooCommerce Order.
-
-**Schedule Reminders:** Daily charter schedule emails to the captain so keeping track of your charter schedule has never been easier. Email shows the schedule for the upcoming 5 days of charter with links to the customers email so contact is simple. Charters show up on your email schedule two days prior to the customer final balance due date and show whether the balance is paid or pending.
 
 **Of course it does that:**
 * unlimited bookings
@@ -49,17 +71,17 @@ Charter Boat Bookings helps you better manage your cash flow by splitting the to
 * sunset charters adjust start time based on duration set and arrival back to dock at civil twilight
 * availability dynamically considers the start time of sunset charters
 
-Please consider upgrading to [Premium Owner Operator](https://msp-media.org/product/charter-boat-bookings-owner-operator/) version which offers many more features you may find useful in your business.
+Please consider upgrading to [Charter Bookings Pro](https://msp-media.org/wordpress-plugins/charter-bookings/) version which offers many more features you may find useful in your business.
 
-== Installation ==
+### Installation ###
 
-=== INSTALLING THE BOOKING PACKAGE PLUGIN IS EASY ===
+#### INSTALLING THE BOOKING PACKAGE PLUGIN IS EASY ####
 1. From the dashboard of your site, navigate to Plugins –> Add New.
 2. Select the Upload option and hit “Choose File.”
 3. Follow the on-screen instructions and wait as the upload completes.
 4. When it’s finished, activate the plugin via the prompt. A message will show confirming activation was successful.
 
-== Frequently Asked Questions ==
+### Frequently Asked Questions ###
 <details>
    <summary>How do I get hooked up to process credit cards?</summary>
    <p>To accept credit cards, you will need a merchant processor (also known as Payment Gateway). We recommend Stripe or Square. They are both easy enough, not too expensive, and work great with WooCommerce.</p>
@@ -111,11 +133,10 @@ Please consider upgrading to [Premium Owner Operator](https://msp-media.org/prod
    <summary>I followed the directions from WooCommerce, but the Calendar and product listing looks all jacked up and nothing like the screenshots you show. What did I do wrong?</summary>
     <p>The charter product listing needs about 850px in minimum width for the desktop display. If your theme restricts the content area to less than that, you will need to make a theme revision with a little custom CSS to expand the content width. </p>
     <p>If the headlines are too large on the Product Listing and Availability calendar, you will need to make a theme revision with a little custom CSS for charter bookings single product pages. </p>
-    <p>Some themes have styling within their CSS which causes the product listing 'Buy Now' to mis-align. This can also have a negative impact sometimes on the WooCommerce checkout page. Please reach out to our team on the support forum so we can take a look at your specific configuration and troubleshoot the styling of those views. If it is something pretty quick, we should be able to take a look and let you know.
 </details>
 <details>
    <summary>Can I change the final balance due date? </summary>
-    <p>The settings within the product admin screen allow you to set the amount of the final balance. The due date timing is static in Charter Bookings Lite at 3 days prior. It can be shifted, notifications cancelled in Charter Bookings Owner Operator (premium).</p>
+    <p>The settings within the product admin screen allow you to set the amount of the final balance. The due date timing is static in Charter Bookings Lite at 3 days prior. It can be shifted, notifications cancelled in [Charter Bookings Pro](https://msp-media.org/wordpress-plugins/charter-bookings/).</p>
 </details>
 <details>
    <summary>How much should I set for the reservation fee vs. the charter fee?</summary>

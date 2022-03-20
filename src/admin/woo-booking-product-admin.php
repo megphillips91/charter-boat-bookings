@@ -117,7 +117,7 @@ add_action( 'admin_footer', __NAMESPACE__ . '\\charter_booking_custom_js' );
 
 //saves custom meta on post update
 function wc_custom_charter_booking_fields( $post_id ) {
-  if(session_status() === PHP_SESSION_NONE){session_start();}
+	session_start();
   if(is_charter_booking($post_id)){
       $_SESSION['cb_fields'] = 'complete';
     }
@@ -134,7 +134,7 @@ function wc_custom_charter_booking_fields( $post_id ) {
         update_post_meta(
           $post_id,
           $field,
-          sanitize_text_field( $_POST[$field] ) );
+          esc_attr( $_POST[$field] ) );
     } else {
       if(is_charter_booking($post_id)){
 			     $_SESSION['cb_fields'] = 'empty';
@@ -147,12 +147,12 @@ function wc_custom_charter_booking_fields( $post_id ) {
 			update_post_meta(
 				$post_id,
 				'_cb_is_sunset',
-				sanitize_text_field( $_POST['_cb_is_sunset'] ) );
+				esc_attr( $_POST['_cb_is_sunset'] ) );
 		} else {
 			update_post_meta(
 				$post_id,
 				'_cb_is_sunset',
-				sanitize_text_field( 'no' ) );
+				esc_attr( 'no' ) );
 		}
 
   if(is_charter_booking($post_id)){
@@ -163,14 +163,14 @@ function wc_custom_charter_booking_fields( $post_id ) {
        update_post_meta(
          $reservation,
          '_regular_price',
-         sanitize_text_field( $_POST['_cb_reservation_fee']) );
+         esc_attr( $_POST['_cb_reservation_fee']) );
      }
      //update changes to final balance fee
      foreach($variations['finalbalance_posts'] as $finalbalance){
        update_post_meta(
          $finalbalance,
          '_regular_price',
-         sanitize_text_field( $_POST['_cb_final_balance']) );
+         esc_attr( $_POST['_cb_final_balance']) );
      }
      //set end time product meta
    }
@@ -181,7 +181,7 @@ add_action( 'woocommerce_process_product_meta', __NAMESPACE__ . '\\wc_custom_cha
 
 
 function cb_product_fields_notice() {
-  if(session_status() === PHP_SESSION_NONE && !headers_sent()){session_start();}
+    session_start();
   	if(isset($_SESSION['cb_fields']) && $_SESSION['cb_fields'] == 'empty'){
     $notice  = '
       <div class="notice notice-error is-dismissible">

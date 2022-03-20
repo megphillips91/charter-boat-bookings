@@ -143,7 +143,7 @@ function product_query_support_cb_location( $wp_query_args, $query_vars, $data_s
     if ( ! empty( $query_vars[$meta_key] ) ) {
         $wp_query_args['meta_query'][] = array(
             'key'     => $meta_key,
-            'value'   => sanitize_text_field( $query_vars[$meta_key] ),
+            'value'   => esc_attr( $query_vars[$meta_key] ),
             'compare' => '=', // <=== Here you can set other comparison arguments
         );
     }
