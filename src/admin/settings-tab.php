@@ -14,24 +14,7 @@ add_filter( 'woocommerce_get_sections_products', __NAMESPACE__ . '\\bookings_pro
 
 
 function cb_location_settings($bookings_settings){
-	$html_upgrade = '<div>
-	<p><em>NOTE: I have a toddler and kids. Phone calls are difficult and I have to schedule them out. My work hours are 2am-7am ET and 10am-2pm ET. If you request support through the <a href="https://wordpress.org/support/plugin/charter-boat-bookings/">WordPress support forum</a> I will get back to you. You can also <a href="https://msp-media.org/charter-boat-bookings/">contact me directly on my website</a></em></p>
-	<ul><li>Set more charter durations</li>
-	<li>Close all charters certain days of week</li>
-	<li>Offer per person charters</li>
-	<li>Certain charters on certain days only</li>
-	<li>Show FAQs in product tabs</li>
-	<li>Show Charter terms in product tabs</li>
-	<li>...and more for only $249</li>
-	</ul>
-	</div>
-	';
-	$bookings_settings[] =	array(
-		'title'     => __( 'Upgrade', 'cb-bookings' ),
-			'type'      => 'title',
-			'desc'     => __( $html_upgrade, 'woocommerce' ),
-			'id'        => 'cb_bookings_upgrade_section',
-	);
+	
 	$bookings_settings[] = array(
 		'type'  => 'sectionend',
 		'id'    => 'cb_bookings_location_section',
@@ -79,6 +62,32 @@ function cb_location_settings($bookings_settings){
  );
 
 	$bookings_settings[] = array(
+		'title' => 'Temperature Units',
+		'type' => 'select',
+		'desc_tip' => 'Display temperature in F or C?',
+		'default'=>'farenheight',
+		'class'=>'cb-temp-units',
+			'id'=>'cb_temp_units',
+			'options'=>array(
+					'celcius'=>'Celcius',
+					'farenheight'=>'Farenheight'
+			),
+	);
+
+	$bookings_settings[] = array(
+		'title' => 'Wind Units',
+			'type' => 'select',
+		'desc_tip' => 'Display temperature in MPH or KPH?',
+		'default'=>'mph',
+		'class'=>'cb-wind-units',
+			'id'=>'cb_wind_units',
+			'options'=>array(
+					'mph'=>'MPH',
+					'kph'=>'KPH'
+			),
+		);
+
+	$bookings_settings[] = array(
 		'type'  => 'sectionend',
 		'id'    => 'cb_bookings_captain_section',
 	);
@@ -94,14 +103,25 @@ function cb_location_settings($bookings_settings){
 		'type'  => 'sectionend',
 		'id'    => 'cb_bookings_location_section',
 	);
+	
 //to add support for locations: get_option('cb_number_locations')
 	for($x = 1; $x <= 1; $x++){
 		$titlenum = $x + 1;
+		
 		$bookings_settings[] =	array(
 			'title'     => __( 'Location ', 'cb-bookings' ),
 				'type'      => 'title',
 				'id'        => 'cb_bookings_location_'.$x.'_section',
 		);
+
+		$bookings_settings[] = array(
+			'title' => 'Region',
+			   'type' => 'text',
+			   'desc_tip' => 'Charter region (ex: Outer Banks, NC)',
+				'id'=>'cb_location_region_'.$x
+		   );
+
+		   
 		$bookings_settings[] = array(
 		 'title' => 'Name',
 			'type' => 'text',

@@ -30,13 +30,13 @@ use \WC_Product_Variation;
  */
 function cb_get_variations($product_id){
   global $wpdb;
-  $qry = "select distinct(ID) from ".$wpdb->prefix."posts where post_name LIKE 'product-'".$product_id."'-reservation%'";
+  $qry = $wpdb->prepare("select distinct(ID) from {$wpdb->prefix}posts where post_name LIKE 'product-%d-reservation%'", $product_id);
   $results = $wpdb->get_results($qry);
   $reservation_posts = cb_wp_collapse($results, 'ID');
-  $qry = "select distinct(ID) from ".$wpdb->prefix."posts where post_name LIKE 'product-'".$product_id."'-finalbalance%'";
+  $qry = $wpdb->prepare("select distinct(ID) from {$wpdb->prefix}posts where post_name LIKE 'product-%d-finalbalance%'", $product_id);
   $results = $wpdb->get_results($qry);
   $finalbalance_posts = cb_wp_collapse($results, 'ID');
-  $qry = "select distinct(ID) from ".$wpdb->prefix."posts where post_name LIKE 'product-'".$product_id."'-fullcharter%'";
+  $qry = $wpdb->prepare("select distinct(ID) from {$wpdb->prefix}posts where post_name LIKE 'product-%d-fullcharter%'", $product_id);
   $results = $wpdb->get_results($qry);
   $fullcharter_posts = cb_wp_collapse($results, 'ID');
   return array('reservation_posts'=>$reservation_posts,
@@ -58,7 +58,7 @@ function cb_variations_exist($product_id, $date){
    $response = array();
    $product = wc_get_product($product_id);
    global $wpdb;
-   $qry = "select * from ".$wpdb->prefix."posts a
+   $qry = "select * from {$wpdb->prefix}posts a
       where post_name LIKE '%".$product_id."%'
       AND post_name LIKE '%".$date."%'";
     $variations = $wpdb->get_results($qry);
