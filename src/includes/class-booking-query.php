@@ -20,8 +20,8 @@ use \DateInterval;
 class CB_Booking_Query {
   public $query_type;
   public $query;
-  public $bookings;
   public $ids;
+  public $bookings;
   public $args;
 
   public function __construct($args, $type = NULL){
@@ -29,14 +29,19 @@ class CB_Booking_Query {
     if(NULL === $type){trigger_error("must provide query type. Options are date, date_range, simple, datetime", E_USER_ERROR);}
     $this->query_type = $type;
     $this->args = (NULL === $args) ? array() : $args ;
-    $prepare_query = 'prepare_'.$type.'_query';
-    $this->$prepare_query(); //doing a variable method name here to call the query preparation methods for the different types of booking queries I am offering here (hope this is okay :) 
-    $results = $wpdb->get_results($this->query);
-    $this->ids = cb_wp_collapse($results, 'id');
-    $this->bookings = array();
-    foreach($this->ids as $id){
-      $this->bookings[] = new CB_Booking($id);
+    if($this->args_are_valid()){
+      $prepare_query = 'prepare_'.$type.'_query';
+      $this->$prepare_query(); //doing a variable method name here to call the query preparation methods for the different types of booking queries I am offering here (hope this is okay :) 
+      $results = $wpdb->get_results($this->query);
+      $this->ids =  cb_wp_collapse($results, 'id') ;
+      $this->bookings = array();
+      foreach($this->ids as $id){
+        $this->bookings[] = new CB_Booking( intval($id) );
+      }
+    } else {
+      return false;
     }
+    
 
   }
 
@@ -178,7 +183,7 @@ class CB_Booking_Query {
   private function prepare_past_query(){
     global $wpdb;
     $sort = (!isset($this->args['sort'])) ? 'ASC' : $this->args['sort'];
-    $qry = "select * from ".$wpdb->prefix."charter_bookings
+    $qry = "select id from ".$wpdb->prefix."charter_bookings
 where date(charter_date)  <= date(now()) ";
     $qry .= " ORDER BY charter_date $sort";
     $this->query = $wpdb->prepare($qry);
@@ -188,7 +193,7 @@ where date(charter_date)  <= date(now()) ";
   private function prepare_future_query(){
     global $wpdb;
     $sort = (!isset($this->args['sort'])) ? "asc" : $this->args['sort'];
-    $qry = "select * from ".$wpdb->prefix."charter_bookings
+    $qry = "select id from ".$wpdb->prefix."charter_bookings
 where date(charter_date)  >= date(now()) ";
     $qry .= " ORDER BY date(charter_date) $sort";
     $this->query = $wpdb->prepare($qry);
@@ -221,7 +226,7 @@ where date(charter_date)  >= date(now()) ";
       $start_date = sanitize_text_field($dates['start']);
       $end_date = sanitize_text_field($dates['end']);
       $sort = (!isset($this->args['sort'])) ? 'ASC' : $this->args['sort'];
-      $qry = "select * from ".$wpdb->prefix."charter_bookings
+      $qry = "select id from ".$wpdb->prefix."charter_bookings
   where date(charter_date) ";
       if(is_array($this->args['date_range'])){
         $qry .= ">= '%s'

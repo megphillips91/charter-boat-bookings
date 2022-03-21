@@ -17,6 +17,21 @@ echo '<pre>'; var_dump($message); echo '</pre>';
 //$message->send();
 }
 
+//testing the admin booking queries
+add_shortcode('testing_sql_prepare', __NAMESPACE__ . '\\testing_sql_prepare');
+function testing_sql_prepare(){
+  //$bookings = new CB_Booking_Query(array('future' => 'future'), 'future');
+  $id = 4;
+  $booking = new CB_Booking($id);
+  ob_start();
+    echo '<pre>';
+    var_dump($booking);
+    echo '</pre';
+  $content = ob_get_contents();
+  ob_end_clean();
+  return $content;
+  }
+
 
 
 add_shortcode('cb_list_products', __NAMESPACE__ . '\\cb_list_products_shortcode');

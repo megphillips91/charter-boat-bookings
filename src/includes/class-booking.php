@@ -35,22 +35,37 @@ class CB_Booking {
     public $order_item_id;
     public $reservation_total;
 
-    public function __construct($id = NULL){
-      if($id != NULL){
-        global $wpdb;
-        $booking = $wpdb->get_row("select * from ".$wpdb->prefix."charter_bookings where id = $id LIMIT 1");
-        if($booking){foreach($booking as $key=>$value){
-          $this->$key = $value;
-        }}
-        $this->set_date_object();
-        $this->set_product_details();
-        $this->set_duration_hours_mins();
-        $this->set_end_time();
-        $this->set_balance_due_date();
-        $this->set_final_balance();
-        $this->set_payment_status();
-        $this->set_userid();
+    public function __construct($id){
+      global $wpdb;
+      $this->id = $id;
+      if(!is_int($id) || NULL === $id){
+        $type = gettype($id);
+        trigger_error("must provide $id as an integer. You've given $type", E_USER_ERROR);
+        return false;
       }
+      $this->get_booking();
+    }
+
+    private function get_booking(){
+      global $wpdb;
+      $booking = $wpdb->get_row(
+        $wpdb->prepare("SELECT * from {$wpdb->prefix}charter_bookings WHERE id=%d",
+        $this->id)
+      );
+      
+      if($booking){
+          foreach($booking as $key=>$value){
+          $this->$key = $value;
+        }
+      }
+      $this->set_date_object();
+      $this->set_product_details();
+      $this->set_duration_hours_mins();
+      $this->set_end_time();
+      $this->set_balance_due_date();
+      $this->set_final_balance();
+      $this->set_payment_status();
+      $this->set_userid();
     }
 
     private function set_product_details(){
@@ -279,7 +294,8 @@ class CB_Booking_Factory  {
 */
   private function instantiate_by_reservation($reservation_id){
     global $wpdb;
-    $booking = $wpdb->get_row("select * from ".$wpdb->prefix."charter_bookings where reservation_id = $reservation_id");
+    $query = $wpdb->prepare("select * from ".$wpdb->prefix."charter_bookings where reservation_id = %d");
+    $booking = $wpdb->get_row($query, $reservation_id);
     $booking = new CB_Booking($booking->id);
     return $booking;
   }
@@ -295,7 +311,8 @@ class CB_Booking_Factory  {
  */
   private function instantiate_by_finalbalance($balance_id){
     global $wpdb;
-    $booking = $wpdb->get_row("select * from ".$wpdb->prefix."charter_bookings where balance_id = $balance_id");
+    $query = $wpdb->prepare("select * from ".$wpdb->prefix."charter_bookings where balance_id = %d");
+    $booking = $wpdb->get_row($query, $balance_id);
     $booking = new CB_Booking($booking->id);
     return $booking;
   }
@@ -312,7 +329,8 @@ class CB_Booking_Factory  {
       if(!$has_persons){
         //then query for any booking of this variation.
         global $wpdb;
-        $booking = $wpdb->get_row("select * from ".$wpdb->prefix."charter_bookings where reservation_id = $reservation_id");
+        $query = $wpdb->prepare("select * from ".$wpdb->prefix."charter_bookings where reservation_id = %d");
+        $booking = $wpdb->get_row($query, $reservation_id);
         if($booking == NULL){
           return false;
         } else {
@@ -322,9 +340,10 @@ class CB_Booking_Factory  {
       //the only way to determine if the booking exists is what? i suppose the same person on the same variation...
       ////we are not trying to control inventory here. because we have already done that through woocommerce. they couldnt get here if the inventory didnt exist. so int his case, we are going to return false on any per person charter and see how that goes for now.
         global $wpdb;
-        $booking = $wpdb->get_row("select * from
-          wp_charter_bookings where
-          reservation_id = $reservation_id && orderid_reservation = ".$this->orderid);
+        $query = $wpdb->prepare("select * from
+        wp_charter_bookings where
+        reservation_id = %d && orderid_reservation = %d");
+        $booking = $wpdb->get_row($query, $reservation_id, $this->orderid);
         if($booking == NULL){
           return false;
         } else {
@@ -516,7 +535,7 @@ class CB_Booking_Change extends CB_Booking{
   }
 
   private function create_coupon(){
-    $coupon_code = $this->id.'_store_credit_'.rand();
+    $coupon_code = $this->id.'_store_credit_'.wp_rand();
     $coupon_id = cb_create_coupon(
       $coupon_code,
       $this->store_credit,
